@@ -133,7 +133,7 @@ cd && cd YukiBot-MD && nano settings.js
 <details>
 <summary><b> ✰ Contáctos</b></summary>
 
-* WhatsApp: [`Aquí`](https://wa.me/522202410659)
+* WhatsApp: [`Aquí`](https://wa.me/59894393163)
 * Correo: [`Aquí`](thekingdestroy507@gmail.com)
 </details>
 
