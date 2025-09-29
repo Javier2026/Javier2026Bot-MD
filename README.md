@@ -185,3 +185,4 @@ href="https://home.akirax.net"><img src="https://raw.githubusercontent.com/The-K
 <a
 href="https://github.com/The-King-Destroy"><img src="https://github.com/The-King-Destroy.png" width="130" height="130" alt="
 ⁱᵃᵐ|𝔇ĕ𝐬†𝓻⊙γ𒆜"/></a>
+### **`ᥫ᭡ Propietario`** Javier2026Bot-MD
