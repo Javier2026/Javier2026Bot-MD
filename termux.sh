@@ -1,7 +1,7 @@
 # Código desarrollado por @gata_dios 
 
 #!/data/data/com.termux/files/usr/bin/bash 
-BOT_DIR="YukiBot-MD"  
+BOT_DIR="Javier2026Bot-MD"  
 BOT_REPO="https://github.com/The-King-Destroy/$BOT_DIR"
 DB_FILE="database.json"
 
@@ -99,5 +99,5 @@ echo -e "${BOLD}${GREEN}Iniciando $BOT_DIR...${RESET}"
 echo -e "${BOLD}${GREEN}Starting  $BOT_DIR...\n${RESET}"
 npm start
 fi
-fi
+fi 
 fi
