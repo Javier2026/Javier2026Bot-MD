@@ -28,93 +28,66 @@ m = smsg(this, m) || m
 if (!m) return
 m.exp = 0
 try {
+if (!global.db) global.db = {}
+if (!global.db.data) global.db.data = {}
+if (!global.db.data.users) global.db.data.users = {}
+if (m && m.sender) {
 let user = global.db.data.users[m.sender]
-if (typeof user !== "object")
-global.db.data.users[m.sender] = {}
-if (user) {
+if (typeof user !== 'object' || user === null) {
+user = global.db.data.users[m.sender] = {}
+}
 if (!("name" in user)) user.name = m.name
-if (!isNumber(user.exp)) user.exp = 0
-if (!isNumber(user.coin)) user.coin = 0
-if (!isNumber(user.bank)) user.bank = 0
-if (!isNumber(user.level)) user.level = 0
-if (!isNumber(user.health)) user.health = 100
+if (!("exp" in user) || !isNumber(user.exp)) user.exp = 0
+if (!("coin" in user) || !isNumber(user.coin)) user.coin = 0
+if (!("bank" in user) || !isNumber(user.bank)) user.bank = 0
+if (!("level" in user) || !isNumber(user.level)) user.level = 0
+if (!("health" in user) || !isNumber(user.health)) user.health = 100
 if (!("genre" in user)) user.genre = ""
 if (!("birth" in user)) user.birth = ""
 if (!("marry" in user)) user.marry = ""
 if (!("description" in user)) user.description = ""
 if (!("packstickers" in user)) user.packstickers = null
 if (!("premium" in user)) user.premium = false
-if (!user.premium) user.premiumTime = 0
+if (!("premiumTime" in user)) user.premiumTime = 0
 if (!("banned" in user)) user.banned = false
 if (!("bannedReason" in user)) user.bannedReason = ""
-if (!isNumber(user.commands)) user.commands = 0
-if (!isNumber(user.afk)) user.afk = -1
+if (!("commands" in user) || !isNumber(user.commands)) user.commands = 0
+if (!("afk" in user) || !isNumber(user.afk)) user.afk = -1
 if (!("afkReason" in user)) user.afkReason = ""
-if (!isNumber(user.warn)) user.warn = 0
-} else global.db.data.users[m.sender] = {
-name: m.name,
-exp: 0,
-coin: 0,
-bank: 0,
-level: 0,
-health: 100,
-genre: "",
-birth: "",
-marry: "",
-description: "",
-packstickers: null,
-premium: false,
-premiumTime: 0,
-banned: false,
-bannedReason: "",
-commands: 0,
-afk: -1,
-afkReason: "",
-warn: 0
+if (!("warn" in user) || !isNumber(user.warn)) user.warn = 0
 }
+if (!global.db.data.chats) global.db.data.chats = {}
+if (m && m.chat) {
 let chat = global.db.data.chats[m.chat]
-if (typeof chat !== 'object')
-global.db.data.chats[m.chat] = {}
-if (chat) {
+if (typeof chat !== 'object' || chat === null) {
+chat = global.db.data.chats[m.chat] = {}
+}
+if (!("users" in chat)) chat.users = {}
 if (!("isBanned" in chat)) chat.isBanned = false
-if (!("welcome" in chat)) chat.welcome = true
+if (!("isMute" in chat)) chat.isMute = false
+if (!("welcome" in chat)) chat.welcome = false
 if (!("sWelcome" in chat)) chat.sWelcome = ""
 if (!("sBye" in chat)) chat.sBye = ""
 if (!("detect" in chat)) chat.detect = true
 if (!("primaryBot" in chat)) chat.primaryBot = null
-if (!("modoadmin" in chat)) chat.modoadmin = false   
+if (!("modoadmin" in chat)) chat.modoadmin = false
 if (!("antiLink" in chat)) chat.antiLink = true
+if (!("antiLinks" in chat)) chat.antiLinks = false
 if (!("nsfw" in chat)) chat.nsfw = false
 if (!("economy" in chat)) chat.economy = true
 if (!("gacha" in chat)) chat.gacha = true
-} else global.db.data.chats[m.chat] = {
-isBanned: false,
-welcome: true,
-sWelcome: "",
-sBye: "",
-detect: true,
-primaryBot: null,
-modoadmin: false,
-antiLink: true,
-nsfw: false,
-economy: true,
-gacha: true
 }
-var settings = global.db.data.settings[this.user.jid]
-if (typeof settings !== "object") 
-global.db.data.settings[this.user.jid] = {}
-if (settings) {
+if (!global.db.data.settings) global.db.data.settings = {}
+if (this.user && this.user.jid) {
+let settings = global.db.data.settings[this.user.jid]
+if (typeof settings !== 'object' || settings === null) {
+settings = global.db.data.settings[this.user.jid] = {}
+}
 if (!("self" in settings)) settings.self = false
 if (!("restrict" in settings)) settings.restrict = true
 if (!("jadibotmd" in settings)) settings.jadibotmd = true
 if (!("antiPrivate" in settings)) settings.antiPrivate = false
 if (!("gponly" in settings)) settings.gponly = false
-} else global.db.data.settings[this.user.jid] = {
-self: false,
-restrict: true,
-jadibotmd: true,
-antiPrivate: false,
-gponly: false
 }} catch (e) {
 console.error(e)
 }
@@ -127,15 +100,15 @@ if (typeof nuevo === "string" && nuevo.trim() && nuevo !== actual) {
 user.name = nuevo
 }} catch {}
 const chat = global.db.data.chats[m.chat]
-const setting = global.db.data.settings[this.user.jid]
+const settings = global.db.data.settings[this.user.jid]
   
 const isROwner = [...global.owner.map((number) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
 const isOwner = isROwner || m.fromMe
 const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender) || user.premium == true
 
 if (opts["nyimak"])  return
-if (!m.fromMe && setting["self"]) return
-if (!m.fromMe && setting["gponly"] && !m.chat.endsWith("g.us") && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
+if (!m.fromMe && !isROwner && settings.self) return
+if (!m.fromMe && !isROwner && settings.gponly && !m.chat.endsWith("g.us") && !/code|p|ping|qr|estado|status|infobot|botinfo|report|reportar|invite|join|logout|suggest|help|menu/gim.test(m.text)) return
 if (opts["swonly"] && m.chat !== "status@broadcast") return
 if (opts["queque"] && m.text && !(isPrems)) {
 const queque = this.msgqueque, time = 1000 * 5
@@ -146,7 +119,6 @@ if (queque.indexOf(previousID) === -1) clearInterval(this)
 await delay(time)
 }, time)
 }
-
 if (m.isBaileys) return
 m.exp += Math.ceil(Math.random() * 10)
 let usedPrefix
@@ -173,7 +145,7 @@ __dirname: ___dirname,
 __filename,
 user,
 chat,
-setting
+settings
 })
 } catch (err) {
 console.error(err)
@@ -213,7 +185,7 @@ __dirname: ___dirname,
 __filename,
 user,
 chat,
-setting
+settings
 })) {
 continue
 }}
@@ -247,7 +219,7 @@ const primaryBotInGroup = participants.some(p => p.jid === global.db.data.chats[
 if (primaryBotConn && primaryBotInGroup || global.db.data.chats[m.chat].primaryBot === global.conn.user.jid) {
 throw !1
 } else {
-// global.db.data.chats[m.chat].primaryBot = null
+global.db.data.chats[m.chat].primaryBot = null
 }} else {
 }
 
@@ -328,7 +300,7 @@ __dirname: ___dirname,
 __filename,
 user,
 chat,
-setting
+settings
 }
 try {
 await plugin.call(this, m, extra)
